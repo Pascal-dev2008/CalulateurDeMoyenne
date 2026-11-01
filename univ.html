@@ -1,0 +1,65 @@
+<!--<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+</head>
+
+<body>
+    <div id="phase1">
+    <h3>1. Entre tes matières</h3>
+    <input id="matiereInput" placeholder="Ex: Maths">
+    <input type="text" placeholder="coefficient" id="coef">
+    <button id="btnMatiere">Ajouter matière</button>
+    <p id="listeMatieres"></p>
+    <button id="btnValider">Valider et passer aux notes</button>
+</div>
+
+<div id="phase2" style="display:none">
+    <h3>2. Entre tes notes</h3>
+    <div id="zoneNotes"></div>
+    <button id="btnCalculer">Calculer moyenne</button>
+    <h2 id="resultat"></h2>
+</div>
+<script src="index.js"></script>
+</body>
+
+</html>-->
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcul Moyenne</title>
+  <link rel="stylesheet" href="univ.css">
+</head>
+<body>
+  <nav>
+  <!-- PHASE 1 : On entre les matières -->
+  <div id="phase1">
+    
+    <h3>Première étape: Entre tes UEs &nbsp; &nbsp; &nbsp;</h3>
+    <input id="matiereInput" placeholder="Ex d'UEs: Maths 210, etc... selon la FAC">
+    <button id="btnMatiere">Ajouter l'UE</button>
+    <p id="listeMatieres">Les UEs ajoutés s'afficheront ici</p>
+    <button id="btnValider">Valider les UEs ajoutés</button>
+  </div>
+
+  <!-- PHASE 2 : On entre les notes + coeffs (cachée au début) -->
+  <div id="phase2" style="display:none">
+    <h3>Deuxième étape: Entre tes notes</h3>
+    <div id="zoneNotes"></div>
+    <button id="btnCalculer">Calculer ma moyenne</button>
+    <h3 id="resultat"></h3>
+    <label class="app">Appréciation</label>
+    <p id="message"></p>
+  </div>
+</nav>
+  
+
+  <script src="univ.js"></script>
+</body>
+</html>

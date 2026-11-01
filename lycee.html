@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calcul Moyenne</title>
+  <link rel="stylesheet" href="univ.css">
+</head>
+<body>
+  <nav>
+  <!-- PHASE 1 : On entre les matières -->
+  <div id="phase1">
+    
+    <h3>Première étape: Entre tes matières</h3>
+    <input id="matiereInput" placeholder="Ex: Maths, Phy, etc...">
+    <button id="btnMatiere">Ajouter la matière</button>
+    <p id="listeMatieres">Les matières ajoutés s'afficheront ici</p>
+    <button id="btnValider">Valider les matières ajoutés</button>
+  </div>
+
+  <!-- PHASE 2 : On entre les notes + coeffs (cachée au début) -->
+  <div id="phase2" style="display:none">
+    <h3>Deuxième étape: Entre tes notes</h3>
+    <div id="zoneNotes"></div>
+    <button id="btnCalculer">Calculer ma moyenne</button>
+    <h3 id="resultat"></h3>
+    <p id="message"></p>
+  </div>
+</nav>
+  
+
+  <script src="lycee.js"></script>
+</body>
+</html>

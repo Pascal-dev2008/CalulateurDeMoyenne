@@ -1,0 +1,148 @@
+
+/*body{
+    background: #244F7B;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    min-height: 80vh;
+
+}
+
+#phase1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 20px;
+}
+
+nav {
+    background: rgba(255, 255, 255, 0.20);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    min-height: 55vh;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 25px;
+    
+}*/
+
+
+*{
+  box-sizing: border-box; /* Très important, empêche les inputs de déborder */
+}
+
+body{
+  background: #244F7B;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+#phase1, #phase2{
+  background: rgba(255,255,255,0.2);
+  border-radius: 25px;
+  padding: 20px;
+  width: 100%; /* Prend toute la largeur */
+  max-width: 400px; /* Mais pas plus de 400px */
+  flex-shrink: 0; /* INTERDIT de rétrécir ! */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 50vh;
+min-width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 90px;
+}
+
+.ligne-matiere{
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: 100%;
+}
+
+.note, .coef{
+  flex: 1; /* Ils se partagent l'espace restant, sans déborder */
+  min-width: 0; /* Empêche le bug où l'input refuse de rétrécir */
+}
+
+input{
+  padding: 12px;
+  border-radius: 15px;
+  outline: none;
+  border: 2px solid #221ABF;
+  color: #111;
+  background: #EAE918;
+  width: 100%;
+  margin-bottom: 50px;
+  font-weight: 600;
+}
+
+#btnMatiere{
+  padding: 12px;
+  width: 70%;
+  border-radius: 17px;
+  background: #151DBE;
+  border: 2px solid #151DBE;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  /*transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);*/
+}
+
+@keyframes ressort {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.25); }
+  60% { transform: scale(0.9); }
+  80% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+#btnValider:active{
+  animation: ressort 3s;
+}
+
+#btnValider{
+  padding: 14px;
+  border-radius: 17px;
+  width: 88%;
+  background: #17A214;
+  background: #25C115;
+  border: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  box-shadow: 1px 1px 5px rgba(210, 162, 37, 1);
+}
+
+h3{
+  color: #111;
+}
+
+#btnCalculer{
+  padding: 12px;
+  width: 70%;
+  border-radius: 17px;
+  background: #151DBE;
+  border: 2px solid #151DBE;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#message{
+  color: darkred;
+  font-weight: bold;
+  font-size: 17px;
+}
+.app{
+  font-size: 20px;
+  color: #fff;
+  font-weight: 500;
+}
+
+

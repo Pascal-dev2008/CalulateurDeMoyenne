@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <svg style="position:absolute;width:0;height:0">
+    <filter id="liquid">
+        <feDisplacementMap in="SourceGraphic" scale="6" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+</svg>
+    
+   <h1 class="titre-verre">
+  Calculer<br>
+  vos<br>
+  moyennes<br>
+  rapidement
+</h1>
+
+    <div class="">
+        <label>Élève</label>
+<input type="checkbox" id="eleve">
+    </div>
+    <div class="">
+        <label for="">Étudiant</label>
+        <input type="checkbox" id="etudiant">
+    </div>
+    <button type="submit" id="btnSoumettre">Soumettre</button>
+    <script src="index.js"></script>
+</body>
+</html>
