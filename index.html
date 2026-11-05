@@ -21,7 +21,7 @@
   rapidement
 </h1>
 
-    <div class="">
+    <div class="input">
         <label>Élève</label>
 <input type="checkbox" id="eleve">
     </div>
@@ -29,7 +29,29 @@
         <label for="">Étudiant</label>
         <input type="checkbox" id="etudiant">
     </div>
-    <button type="submit" id="btnSoumettre">Soumettre</button>
-    <script src="index.js"></script>
+    <button type="submit" id="btnSoumettre">Soumettre<button type="button" id="btnAssistantIA">Assistant IA</button>
+
+<div class="bande" id="bandeNoire">
+    <div class="popupBlanc" id="popupBlanc">
+        <!-- HEADER -->
+        <div class="chat-header">
+            <h3>Assistant IA</h3>
+            <button id="btnFermer">✕</button>
+        </div>
+        
+        <!-- MESSAGES -->
+        <div id="chatMessages">
+            <div class="msg ia">Salut ! <br>Comment puis-je t'aider ?</div>
+        </div>
+        
+        <!-- SAISIE -->
+        <div class="chat-input">
+            <textarea id="inputIA" placeholder="Écris ta question ici..."></textarea>
+            <button id="btnEnvoyerIA">></button>
+        </div>
+    </div>
+</div>
+
+<script src="index.js"></script>
 </body>
 </html>

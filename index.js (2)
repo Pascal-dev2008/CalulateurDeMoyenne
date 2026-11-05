@@ -1,0 +1,402 @@
+/*document.addEventListener('DOMContentLoaded', () => {
+  const eleve = document.getElementById('eleve');
+  const etudiant = document.getElementById('etudiant');
+  const btn = document.getElementById('btnSoumettre');
+  const message = document.getElementById('message');
+  
+  if (eleve && etudiant) {
+    eleve.addEventListener('change', () => { if (eleve.checked) etudiant.checked = false; });
+    etudiant.addEventListener('change', () => { if (etudiant.checked) eleve.checked = false; });
+  }
+  
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (eleve?.checked) window.location.href = "lycee.html";
+      else if (etudiant?.checked) window.location.href = "univ.html";
+      else if (message) message.textContent = "Coche Élève ou Étudiant";
+    });
+  }
+
+  // ===== GEMINI DIRECT & SÉCURISÉ =====
+  const API_KEY = "AQ.Ab8RN6JQuisc44BWBbfx6YzRXv2vBNOv7Ud0UPQShk89xiuLtg"; // <-- METS TA CLÉ ICI
+  const MODEL = "gemini-2.5-flash"; // Modèle ultra-stable et rapide
+
+  const btnIA = document.getElementById('btnAssistantIA') || document.getElementById('historique');
+  const bande = document.getElementById('bandeNoire');
+  const popup = document.getElementById('popupBlanc');
+  const btnFermer = document.getElementById('btnFermer');
+  const input = document.getElementById('inputIA');
+  const btnEnvoyer = document.getElementById('btnEnvoyerIA');
+  const messages = document.getElementById('chatMessages');
+
+  function ouvrir(){ bande?.classList.add('ouvert'); if(popup) popup.style.animation='slideUp 0.35s forwards'; }
+  function fermer(){ if(!popup||!bande) return; popup.style.animation='slideDown 0.3s forwards'; setTimeout(()=>bande.classList.remove('ouvert'),280); }
+  
+  btnIA?.addEventListener('click', ouvrir);
+  btnFermer?.addEventListener('click', fermer);
+  bande?.addEventListener('click', (e)=>{ if(e.target===bande) fermer(); });
+
+  if(messages && !messages.innerHTML.trim()){
+    messages.innerHTML = `<div class="msg ia">Salut ! Je suis ton assistant pédagogique. Pose-moi n'importe quelle question sur tes cours ou tes moyennes, je t'explique tout clairement !</div>`;
+  }
+
+  // Fonction robuste avec gestion des erreurs (évite le blocage infini)
+  async function appelerGemini(question){
+    try {
+      const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${API_KEY}`;
+      const body = {
+        contents: [{
+          parts: [{
+            text: `Tu es un assistant scolaire bienveillant et très pédagogue pour des élèves et étudiants au Togo. Tu expliques les concepts simplement avec des exemples concrets et locaux si possible. Ne demande pas les notes de l'élève sauf s'il aborde le sujet. Question : ${question}`
+          }]
+        }]
+      };
+
+      const res = await fetch(url, { 
+        method: "POST", 
+        headers: {"Content-Type":"application/json"}, 
+        body: JSON.stringify(body) 
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error("Erreur API Google :", data);
+        return `⚠️ Oups, erreur de l'API (${res.status}) : ${data.error?.message || "Vérifie ta clé API."}`;
+      }
+
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || "Désolé, je n'ai pas pu générer de réponse claire. Réessaie !";
+    } catch (err) {
+      console.error("Erreur réseau :", err);
+      return "⚠️ Erreur réseau ou de connexion. Vérifie ton accès internet.";
+    }
+  }
+
+  async function envoyer(){
+    if(!input||!messages) return;
+    let txt = input.value.trim();
+    if(!txt) return;
+
+    if(API_KEY.includes("COLLE_TA_CLE")){
+      messages.innerHTML += `<div class="msg ia" style="background:#ffdddd; color:#000;">⚠️ Tu n'as pas encore rempli ta vraie clé API Gemini dans la variable API_KEY du code !</div>`;
+      return;
+    }
+
+    // Affiche le message de l'utilisateur
+    messages.innerHTML += `<div class="msg user">${txt}</div>`;
+    input.value = "";
+
+    // Affiche l'indicateur "Gemini écrit..."
+    messages.innerHTML += `<div class="msg ia" id="typing">Gemini écrit...</div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    // Récupère la réponse de l'IA
+    let rep = await appelerGemini(txt);
+
+    // Supprime "Gemini écrit..." dans tous les cas (même en cas d'erreur)
+    document.getElementById("typing")?.remove();
+
+    // Affiche la réponse finale
+    messages.innerHTML += `<div class="msg ia">${rep}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  btnEnvoyer?.addEventListener('click', envoyer);
+  input?.addEventListener('keydown', (e)=>{ 
+    if(e.key==='Enter' && !e.shiftKey){ 
+      e.preventDefault(); 
+      envoyer(); 
+    } 
+  });
+});*/
+
+
+
+
+
+/*code secour*/
+/*document.addEventListener('DOMContentLoaded', () => {
+  const eleve = document.getElementById('eleve');
+  const etudiant = document.getElementById('etudiant');
+  const btn = document.getElementById('btnSoumettre');
+  const message = document.getElementById('message');
+  
+  if (eleve && etudiant) {
+    eleve.addEventListener('change', () => { if (eleve.checked) etudiant.checked = false; });
+    etudiant.addEventListener('change', () => { if (etudiant.checked) eleve.checked = false; });
+  }
+  
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (eleve?.checked) window.location.href = "lycee.html";
+      else if (etudiant?.checked) window.location.href = "univ.html";
+      else if (message) message.textContent = "Coche Élève ou Étudiant";
+    });
+  }
+
+  // ===== CONFIGURATION =====
+  const API_KEY = "La_cle_api"; // Ton jeton AQ.
+  
+  // Liste des modèles à tester en secours si l'un d'eux est indisponible
+  const MODELS = [
+    "gemini-2.5-flash",
+    "gemini-3-flash",
+    "gemini-1.5-flash"
+  ];
+
+  const btnIA = document.getElementById('btnAssistantIA') || document.getElementById('historique');
+  const bande = document.getElementById('bandeNoire');
+  const popup = document.getElementById('popupBlanc');
+  const btnFermer = document.getElementById('btnFermer');
+  const input = document.getElementById('inputIA');
+  const btnEnvoyer = document.getElementById('btnEnvoyerIA');
+  const messages = document.getElementById('chatMessages');
+
+  function ouvrir(){ bande?.classList.add('ouvert'); if(popup) popup.style.animation='slideUp 0.35s forwards'; }
+  function fermer(){ if(!popup||!bande) return; popup.style.animation='slideDown 0.3s forwards'; setTimeout(()=>bande.classList.remove('ouvert'),280); }
+  
+  btnIA?.addEventListener('click', ouvrir);
+  btnFermer?.addEventListener('click', fermer);
+  bande?.addEventListener('click', (e)=>{ if(e.target===bande) fermer(); });
+
+  if(messages && !messages.innerHTML.trim()){
+    messages.innerHTML = `<div class="msg ia">Salut ! Je suis ton assistant pédagogique. Pose-moi n'importe quelle question sur tes cours ou tes moyennes, je t'explique tout clairement !</div>`;
+  }
+
+  // Fonction intelligente avec gestion du jeton AQ. (Bearer) et multi-modèles
+  async function appelerGemini(question){
+    for (let i = 0; i < MODELS.length; i++) {
+      const currentModel = MODELS[i];
+      try {
+        let url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent`;
+        
+        // Préparation des en-têtes et de l'URL selon le type de clé
+        const headers = { "Content-Type": "application/json" };
+        
+        if (API_KEY.startsWith("AQ.")) {
+          // Jeton Google Cloud / OAuth : utilisation de Bearer dans les headers
+          headers["Authorization"] = `Bearer ${API_KEY}`;
+        } else {
+          // Clé API classique : ajout de ?key= dans l'URL
+          url += `?key=${API_KEY}`;
+        }
+
+        const body = {
+          contents: [{
+            parts: [{
+              text: `Tu es un assistant scolaire bienveillant et très pédagogue pour des élèves et étudiants au Togo. Tu expliques les concepts simplement avec des exemples concrets et locaux si possible. Ne demande pas les notes de l'élève sauf s'il aborde le sujet. Question : ${question}`
+            }]
+          }]
+        };
+
+        const res = await fetch(url, { 
+          method: "POST", 
+          headers: headers, 
+          body: JSON.stringify(body) 
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          return data.candidates?.[0]?.content?.parts?.[0]?.text || "Désolé, je n'ai pas pu générer de réponse claire. Réessaie !";
+        }
+
+        console.warn(`⚠️ Modèle ${currentModel} indisponible (${res.status}), essai avec le suivant...`, data);
+
+        if (i === MODELS.length - 1) {
+          return `⚠️ Oups, erreur de l'API (${res.status}) : ${data.error?.message || "Vérifie ton jeton."}`;
+        }
+
+      } catch (err) {
+        console.warn(`Erreur réseau avec ${currentModel}:`, err);
+        if (i === MODELS.length - 1) {
+          return "⚠️ Erreur réseau ou de connexion. Vérifie ton accès internet.";
+        }
+      }
+    }
+  }
+
+  async function envoyer(){
+    if(!input||!messages) return;
+    let txt = input.value.trim();
+    if(!txt) return;
+
+    messages.innerHTML += `<div class="msg user">${txt}</div>`;
+    input.value = "";
+
+    messages.innerHTML += `<div class="msg ia" id="typing">Gemini écrit...</div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    let rep = await appelerGemini(txt);
+
+    document.getElementById("typing")?.remove();
+
+    messages.innerHTML += `<div class="msg ia">${rep}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  btnEnvoyer?.addEventListener('click', envoyer);
+  input?.addEventListener('keydown', (e)=>{ 
+    if(e.key==='Enter' && !e.shiftKey){ 
+      e.preventDefault(); 
+      envoyer(); 
+    } 
+  });
+});*/
+
+
+/*deuxième code*/
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ===== CHOIX ÉLÈVE / ÉTUDIANT =====
+  const eleve = document.getElementById('eleve');
+  const etudiant = document.getElementById('etudiant');
+  const btn = document.getElementById('btnSoumettre');
+  const message = document.getElementById('message');
+
+  if (eleve && etudiant) {
+    eleve.addEventListener('change', () => { if (eleve.checked) etudiant.checked = false; });
+    etudiant.addEventListener('change', () => { if (etudiant.checked) eleve.checked = false; });
+  }
+
+  if (btn) {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (eleve?.checked) window.location.href = "lycee.html";
+      else if (etudiant?.checked) window.location.href = "univ.html";
+      else if (message) message.textContent = "Coche Élève ou Étudiant";
+    });
+  }
+
+  // ===== CONFIGURATION GEMINI =====
+  // Colle ta clé AQ. ici (test personnel seulement : ne publie pas le site avec la clé visible)
+  const API_KEY = "AQ.Ab8RN6JQ52sZr65ireK64hCN0aPzojDrRMnasJSoJfJprAM7Eg";
+
+  // Modèles essayés dans l'ordre si l'un est indisponible
+  const MODELS = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash"
+  ];
+
+  // ===== ÉLÉMENTS DU CHAT =====
+  const btnIA = document.getElementById('btnAssistantIA') || document.getElementById('historique');
+  const bande = document.getElementById('bandeNoire');
+  const popup = document.getElementById('popupBlanc');
+  const btnFermer = document.getElementById('btnFermer');
+  const input = document.getElementById('inputIA');
+  const btnEnvoyer = document.getElementById('btnEnvoyerIA');
+  const messages = document.getElementById('chatMessages');
+
+  function ouvrir() {
+    bande?.classList.add('ouvert');
+    if (popup) popup.style.animation = 'slideUp 0.35s forwards';
+  }
+
+  function fermer() {
+    if (!popup || !bande) return;
+    popup.style.animation = 'slideDown 0.3s forwards';
+    setTimeout(() => bande.classList.remove('ouvert'), 280);
+  }
+
+  btnIA?.addEventListener('click', ouvrir);
+  btnFermer?.addEventListener('click', fermer);
+  bande?.addEventListener('click', (e) => { if (e.target === bande) fermer(); });
+
+  if (messages && !messages.innerHTML.trim()) {
+    messages.innerHTML = `<div class="msg ia">Salut ! Je suis ton assistant pédagogique. Pose-moi n'importe quelle question sur tes cours ou tes moyennes, je t'explique tout clairement !</div>`;
+  }
+
+  // Protège l'affichage : le texte est affiché comme du texte, pas comme du code HTML
+  function echapper(texte) {
+    const div = document.createElement('div');
+    div.textContent = texte;
+    return div.innerHTML.replace(/\n/g, '<br>');
+  }
+
+  // ===== APPEL À GEMINI =====
+  async function appelerGemini(question) {
+    for (let i = 0; i < MODELS.length; i++) {
+      const currentModel = MODELS[i];
+      const dernier = i === MODELS.length - 1;
+
+      try {
+        const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent`;
+
+        // La clé (AQ. ou AIza) passe toujours par l'en-tête x-goog-api-key
+        const headers = {
+          "Content-Type": "application/json",
+          "x-goog-api-key": API_KEY
+        };
+
+        const body = {
+          contents: [{
+            parts: [{
+              text: `Tu es un assistant scolaire bienveillant et très pédagogue pour des élèves et étudiants au Togo. Tu expliques les concepts simplement avec des exemples concrets et locaux si possible. Ne demande pas les notes de l'élève sauf s'il aborde le sujet. Question : ${question}`
+            }]
+          }]
+        };
+
+        const res = await fetch(url, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify(body)
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          return data.candidates?.[0]?.content?.parts?.[0]?.text
+            || "Désolé, je n'ai pas pu générer de réponse claire. Réessaie !";
+        }
+
+        console.warn(`⚠️ Modèle ${currentModel} : erreur ${res.status}`, data);
+
+        // 401 / 403 = problème de clé : inutile d'essayer un autre modèle
+        if (res.status === 401 || res.status === 403) {
+          return `⚠️ Erreur de clé (${res.status}) : ${data.error?.message || "Vérifie ta clé API."}`;
+        }
+
+        if (dernier) {
+          return `⚠️ Oups, erreur de l'API (${res.status}) : ${data.error?.message || "Réessaie plus tard."}`;
+        }
+
+      } catch (err) {
+        console.warn(`Erreur réseau avec ${currentModel}:`, err);
+        if (dernier) {
+          return "⚠️ Erreur réseau ou de connexion. Vérifie ton accès internet.";
+        }
+      }
+    }
+  }
+
+  // ===== ENVOI D'UN MESSAGE =====
+  async function envoyer() {
+    if (!input || !messages) return;
+    const txt = input.value.trim();
+    if (!txt) return;
+
+    messages.innerHTML += `<div class="msg user">${echapper(txt)}</div>`;
+    input.value = "";
+
+    messages.innerHTML += `<div class="msg ia" id="typing">Gemini écrit...</div>`;
+    messages.scrollTop = messages.scrollHeight;
+
+    const rep = await appelerGemini(txt);
+
+    document.getElementById("typing")?.remove();
+
+    messages.innerHTML += `<div class="msg ia">${echapper(rep)}</div>`;
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  btnEnvoyer?.addEventListener('click', envoyer);
+  input?.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      envoyer();
+    }
+  });
+});

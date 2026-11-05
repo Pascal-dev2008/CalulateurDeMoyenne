@@ -1,0 +1,315 @@
+/*document.addEventListener('DOMContentLoaded', () => {
+
+  // ========== SUPABASE ==========
+  const SUPABASE_URL = 'dxzfhnkkaouppcqxgtup'; 
+  const SUPABASE_ANON_KEY = 'sb_publishable_Gh8abCFZkMR3F-oS9SazOw__5Jc-vHT';
+  let _supabase = null;
+  try{
+    if(window.supabase){
+      _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+  }catch(e){
+    console.warn("Supabase pas configuré, on continue sans BDD");
+  }
+
+  async function sauvegarderSupabase(niveau, moyenne, mention) {
+    if(!_supabase) { console.log("Supabase non chargé"); return; }
+    try{
+      const { error } = await _supabase.from('historique').insert([{ niveau, moyenne, mention }]);
+      if (error) console.error("Erreur d'enregistrement :", error);
+      else console.log("Enregistré !");
+    }catch(e){ console.error(e); }
+  }
+
+  // ========== TON CODE ==========
+  let matieres = []
+  const matiereInput = document.getElementById('matiereInput')
+  const listeMatieres = document.getElementById('listeMatieres')
+  const zoneNotes = document.getElementById('zoneNotes')
+  const phase1 = document.getElementById('phase1')
+  const phase2 = document.getElementById('phase2')
+  const message = document.getElementById('message')
+
+  document.getElementById('btnMatiere')?.addEventListener('click', () => {
+    let nom = matiereInput.value.trim()
+    if (nom !== "") {
+      matieres.push(nom)
+      listeMatieres.textContent = matieres.join(', ')
+      listeMatieres.style.color = "#fff"
+      listeMatieres.style.fontWeight = "bold"
+      matiereInput.value = ""
+    }
+  })
+
+  document.getElementById('btnValider')?.addEventListener('click', () => {
+    if (matieres.length === 0) {
+      listeMatieres.textContent = "aucune matière ajouter"
+      return
+    }
+    phase1.style.display = "none"
+    phase2.style.display = "block"
+    zoneNotes.innerHTML = matieres.map(matiere => `
+      <div style="margin-bottom:0px">
+        <label style="color:white;"><b>${matiere}</b> : </label>
+        <input type="number" class="note" placeholder="Note /20" style="width:60%; margin-bottom:5px;"><br>
+        <label style="color:white;"><b>Coeff:</b></label>
+        <input type="number" class="coef" placeholder="Coeff" value="1" style="width:65%;">
+      </div>
+    `).join('')
+  })
+
+  document.getElementById('btnCalculer')?.addEventListener('click', async () => {
+    const notesInputs = document.querySelectorAll('.note')
+    const coefInputs = document.querySelectorAll('.coef')
+    let totalPoints = 0; let totalCoef = 0
+    for (let i = 0; i < notesInputs.length; i++) {
+      let note = parseFloat(notesInputs[i].value)
+      let coef = parseFloat(coefInputs[i].value)
+      if (!isNaN(note) && !isNaN(coef)) { totalPoints += note * coef; totalCoef += coef; }
+    }
+    if (totalCoef === 0) {
+      document.getElementById('resultat').textContent = "Remplis au moins une note"
+      return
+    }
+    let moyenne = totalPoints / totalCoef;
+    document.getElementById('resultat').textContent = "Moyenne : " + moyenne.toFixed(2) + " / 20"
+
+    let mention = "";
+    if (moyenne < 10) mention = "travail insuffisant";
+    else if (moyenne < 12) mention = "Passable";
+    else if (moyenne < 14) mention = "Assez bien";
+    else if (moyenne < 16) mention = "Bien";
+    else if (moyenne < 18) mention = "Très Bien";
+    else mention = "Excellent";
+    
+    message.textContent = mention;
+    message.style.color = "#48ED1E";
+    if(moyenne < 12) message.style.color = "#9118C4";
+
+    await sauvegarderSupabase("Licence", parseFloat(moyenne.toFixed(2)), mention);
+  })
+
+  // ========== POPUP ==========
+  const histBouton = document.getElementById('historique');
+  const popupHist = document.querySelector('.bande');
+  const popupBlanc = document.querySelector('.popupBlanc');
+  const btnFermer = document.getElementById('btnFermer');
+
+  function ouvrirPopup(){ if(popupHist){ popupHist.classList.add('ouvert'); popupHist.style.display = "flex"; } }
+  function fermerPopup(){
+    if(!popupHist || !popupBlanc) return;
+    popupBlanc.style.animation = "slideDown 0.35s ease-in forwards";
+    setTimeout(() => {
+      popupHist.style.display = "none";
+      popupHist.classList.remove('ouvert');
+      popupBlanc.style.animation = "slideUp 0.50s ease-out forwards";
+    }, 300);
+  }
+  if(histBouton) histBouton.addEventListener('click', ouvrirPopup);
+  if(btnFermer) btnFermer.addEventListener('click', fermerPopup);
+});*/
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ========== SUPABASE ==========
+  // L'URL complète = https://<ref-du-projet>.supabase.co
+  const SUPABASE_URL = 'https://dxzfhnkkaouppcqxgtup.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_Gh8abCFZkMR3F-oS9SazOw__5Jc-vHT';
+  const NIVEAU = "Lycée & Collège";
+  let _supabase = null;
+  try {
+    if (window.supabase) {
+      _supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    } else {
+      console.warn("La librairie Supabase n'est pas chargée (script manquant dans lycee.html)");
+    }
+  } catch (e) {
+    console.warn("Supabase pas configuré, on continue sans BDD", e);
+  }
+
+  // Identifiant de cet appareil : sert à n'afficher que TES calculs dans l'historique
+  function idAppareil() {
+    try {
+      let id = localStorage.getItem('appareil_id');
+      if (!id) {
+        id = (window.crypto && crypto.randomUUID)
+          ? crypto.randomUUID()
+          : Date.now() + '-' + Math.random().toString(36).slice(2);
+        localStorage.setItem('appareil_id', id);
+      }
+      return id;
+    } catch (e) {
+      return 'inconnu';
+    }
+  }
+
+  async function sauvegarderSupabase(niveau, moyenne, mention) {
+    if (!_supabase) { console.log("Supabase non chargé"); return; }
+    try {
+      const { error } = await _supabase.from('historique').insert([{
+        niveau,
+        moyenne,
+        mention,
+        appareil: idAppareil()
+      }]);
+      if (error) console.error("Erreur d'enregistrement :", error);
+      else console.log("Enregistré !");
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function chargerHistorique() {
+    const liste = document.getElementById('listeHistorique');
+    if (!liste) return;
+
+    if (!_supabase) {
+      liste.textContent = "Historique indisponible pour le moment.";
+      return;
+    }
+
+    liste.textContent = "Chargement...";
+
+    try {
+      const { data, error } = await _supabase
+        .from('historique')
+        .select('*')
+        .eq('appareil', idAppareil())
+        .order('created_at', { ascending: false })
+        .limit(30);
+
+      if (error) {
+        console.error("Erreur de lecture :", error);
+        liste.textContent = "Impossible de charger l'historique.";
+        return;
+      }
+
+      if (!data || data.length === 0) {
+        liste.textContent = "Aucun calcul enregistré pour le moment.";
+        return;
+      }
+
+      liste.innerHTML = "";
+      data.forEach((ligne) => {
+        const item = document.createElement('div');
+        item.style.cssText = "padding:10px 0; border-bottom:1px solid #ddd; color:#111;";
+
+        const titre = document.createElement('div');
+        titre.style.fontWeight = "bold";
+        titre.textContent = `${Number(ligne.moyenne).toFixed(2)} / 20 — ${ligne.mention}`;
+
+        const detail = document.createElement('small');
+        const date = new Date(ligne.created_at).toLocaleString('fr-FR');
+        detail.textContent = `${ligne.niveau} · ${date}`;
+
+        item.appendChild(titre);
+        item.appendChild(detail);
+        liste.appendChild(item);
+      });
+    } catch (e) {
+      console.error(e);
+      liste.textContent = "Erreur de connexion.";
+    }
+  }
+
+  // ========== CALCUL DE MOYENNE ==========
+  let matieres = [];
+  const matiereInput = document.getElementById('matiereInput');
+  const listeMatieres = document.getElementById('listeMatieres');
+  const zoneNotes = document.getElementById('zoneNotes');
+  const phase1 = document.getElementById('phase1');
+  const phase2 = document.getElementById('phase2');
+  const message = document.getElementById('message');
+
+  document.getElementById('btnMatiere')?.addEventListener('click', () => {
+    let nom = matiereInput.value.trim();
+    if (nom !== "") {
+      matieres.push(nom);
+      listeMatieres.textContent = matieres.join(', ');
+      listeMatieres.style.color = "#fff";
+      listeMatieres.style.fontWeight = "bold";
+      matiereInput.value = "";
+    }
+  });
+
+  document.getElementById('btnValider')?.addEventListener('click', () => {
+    if (matieres.length === 0) {
+      listeMatieres.textContent = "aucune matière ajouter";
+      return;
+    }
+    phase1.style.display = "none";
+    phase2.style.display = "block";
+    zoneNotes.innerHTML = matieres.map(matiere => `
+      <div style="margin-bottom:0px">
+        <label style="color:white;"><b>${matiere}</b> : </label>
+        <input type="number" class="note" placeholder="Note /20" style="width:60%; margin-bottom:5px;"><br>
+        <label style="color:white;"><b>Coeff:</b></label>
+        <input type="number" class="coef" placeholder="Coeff" value="1" style="width:65%;">
+      </div>
+    `).join('');
+  });
+
+  document.getElementById('btnCalculer')?.addEventListener('click', async () => {
+    const notesInputs = document.querySelectorAll('.note');
+    const coefInputs = document.querySelectorAll('.coef');
+    let totalPoints = 0;
+    let totalCoef = 0;
+    for (let i = 0; i < notesInputs.length; i++) {
+      let note = parseFloat(notesInputs[i].value);
+      let coef = parseFloat(coefInputs[i].value);
+      if (!isNaN(note) && !isNaN(coef)) {
+        totalPoints += note * coef;
+        totalCoef += coef;
+      }
+    }
+    if (totalCoef === 0) {
+      document.getElementById('resultat').textContent = "Remplis au moins une note";
+      return;
+    }
+    let moyenne = totalPoints / totalCoef;
+    document.getElementById('resultat').textContent = "Moyenne : " + moyenne.toFixed(2) + " / 20";
+
+    let mention = "";
+    if (moyenne < 10) mention = "travail insuffisant";
+    else if (moyenne < 12) mention = "Passable";
+    else if (moyenne < 14) mention = "Assez bien";
+    else if (moyenne < 16) mention = "Bien";
+    else if (moyenne < 18) mention = "Très Bien";
+    else mention = "Excellent";
+
+    message.textContent = mention;
+    message.style.color = "#48ED1E";
+    if (moyenne < 12) message.style.color = "#9118C4";
+
+    await sauvegarderSupabase(NIVEAU, parseFloat(moyenne.toFixed(2)), mention);
+  });
+
+  // ========== POPUP HISTORIQUE ==========
+  const histBouton = document.getElementById('historique');
+  const popupHist = document.getElementById('bandeNoire');
+  const popupBlanc = document.getElementById('popupBlanc');
+  const btnFermer = document.getElementById('btnFermer');
+
+  function ouvrirPopup() {
+    if (popupHist) {
+      popupHist.classList.add('ouvert');
+      popupHist.style.display = "flex";
+    }
+    chargerHistorique();
+  }
+
+  function fermerPopup() {
+    if (!popupHist || !popupBlanc) return;
+    popupBlanc.style.animation = "slideDown 0.35s ease-in forwards";
+    setTimeout(() => {
+      popupHist.style.display = "none";
+      popupHist.classList.remove('ouvert');
+      popupBlanc.style.animation = "slideUp 0.50s ease-out forwards";
+    }, 300);
+  }
+
+  if (histBouton) histBouton.addEventListener('click', ouvrirPopup);
+  if (btnFermer) btnFermer.addEventListener('click', fermerPopup);
+});

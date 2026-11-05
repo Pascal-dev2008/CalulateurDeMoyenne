@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <title>Calcul Moyenne</title>
   <link rel="stylesheet" href="univ.css">
 </head>
@@ -12,7 +13,7 @@
   <div id="phase1">
     
     <h3>Première étape: Entre tes matières</h3>
-    <input id="matiereInput" placeholder="Ex: Maths, Phy, etc...">
+    <input id="matiereInput" placeholder="Ex: Maths, physique, Anglais, etc...">
     <button id="btnMatiere">Ajouter la matière</button>
     <p id="listeMatieres">Les matières ajoutés s'afficheront ici</p>
     <button id="btnValider">Valider les matières ajoutés</button>
@@ -26,6 +27,23 @@
     <h3 id="resultat"></h3>
     <p id="message"></p>
   </div>
+  <button class="hstbtn" id="historique">Historique</button>
+  <!--<div class="bande" id="bandeNoire">
+    <div class="popupBlanc" id="popupBlanc">
+      <div class="popupBlanc">
+  <button id="btnFermer" style="position:absolute; top:-3px; right:-10px; border:none; background:none; font-size:22px;;">✕</button>
+  ... ton historique ...
+</div>
+    </div>
+  </div>-->
+  
+  <div class="bande" id="bandeNoire">
+  <div class="popupBlanc" id="popupBlanc">
+    <button id="btnFermer" style="position:absolute; top:15px; right:15px; border:none; background:none; font-size:22px;">✕</button>
+    <h3>Historique</h3>
+    <div id="listeHistorique"></div>
+  </div>
+</div>
 </nav>
   
 
